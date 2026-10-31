@@ -1,0 +1,1169 @@
+A Game-Based Deep Learning
+System To Detect Dyslexia Early in
+Children
+M. Chaitanya#1, P. Aravind#2, M. Siddartha#3, K. Naga Vignesh#4
+#1,2,3,4
+
+Department of Computer Science and Engineering, NRI Institute Of Technology, Vijayawada,
+Andhra Pradesh, India
+Corresponding Author: Ms. O. Jahnavi, Assistant Professor, Department of CSE, NRIIT
+
+Abstract
+About 5-10% of kids in school have a reading/writing disability of the brain (Dyslexia) which effects
+their ability to learn to read/write.[11] Traditional methods of screening are based most heavily on the
+observations of teachers and on having kids do written tests manually. Both of those methods take a lot
+of time, are subjective, and are often incorrect. We will propose a new idea through the use of games to
+help identify kids at risk of developing dyslexia during their early development[12]. Games can allow
+us to capture multiple types of Behavioural data (Visual, Temporal response, Mistakes made and
+Features of handwriting, etc.) while kids play naturally (i.e., without pressure), through the use of our
+Game system. As a Hybrid of CNN-LSTM-ANN, we will be able to accurately predict the risk of
+developing dyslexia in kids by looking at Visual, Temporal response, and Statistical features of gameplay behaviour (i.e., the way they play and the results) to identify early indicators of dyslexia.[1][2][3]
+Our Hybrid system will not be like other computer-based tools that use very simple scoring algorithms
+or algorithms that only capture a limited number of factors associated with the disability.[5][7] Instead,
+the new architecture we are proposing will allow us to develop and utilize deeper models of behaviour.
+With the use of this new hybrid model, we will create a new path for developing scalable, accessible
+methods for screening kids at risk of developing dyslexia and develop new ways to develop strategies
+for intervention in an education setting.[10]
+Keywords: Dyslexia Detection, Game-Based Learning, Deep Learning, Hybrid CNN–LSTM–ANN,
+Multimodal Feature Fusion, Early Detection, Educational Technology
+
+1.0 Introduction
+Dyslexia is a specific learning disability characterized by problems with accurate and fluent word
+recognition, spelling, and reading comprehension that are not caused by lack of instruction, visual acuity,
+or intelligence[11][16]. It is estimated, based on educational research, to affect roughly 5-10% of the
+world's school population, although most cases remain undiagnosed during formative years when early
+intervention could be most effective[9][11][20]. The results of such delayed detection are very serious
+
+and include poor academic performance, lowered self-confidence, psychological distress, and long-term
+educational disadvantage.
+Basic cognitive science has established that dyslexia is characterized by impairments in phonological
+processing, RAN, and wider language-related cognitive abilities. Neuroimaging studies also indicate that
+individuals with dyslexia have different activation patterns in temporo-parietal and occipito-temporal
+regions of the brain during reading; thus, dyslexia has a neurobiological origin. According to the doubledeficit hypothesis, most severe reading impairments result from combined deficits in phonological
+awareness and rapid naming, which justifies the measurement of both speed and accuracy in screening
+tasks[14].
+
+1.1 Problem Motivation
+Dyslexia Screening Solutions Today Experience the Following Limitations:
+• Manual Methods: The Individualized Special Education (ISD) checklist is completed via traditional
+paper/pencil format(s) under exam-like conditions which induce stress and anxiety in children[1][3].
+• Subjectivity: Teachers' judgments and experiences are a huge factor for screening; as a result, screening
+processes produce poor, inconsistent results from teacher to teacher when identifying at-risk children.
+• Time Inefficiency: Teachers must go through a series of time-consuming steps to screen children: 1)
+nomination by teachers; 2) written test on child's reading ability; 3) scoring by teacher manually of
+written test; 4) specialists confirming results and providing recommendations for support.
+• Limited Data Analysis: Computer-based assessment tools (surveys, eye-tracking, simple computer
+games) currently use a basic scoring algorithm to assess only a handful of behavioral attributes, thus
+failing to accurately assess many other attributes and to replicate the dyslexics' many complicated
+patterns of behavior[5][7][12].
+
+1.2 Research Contribution
+To solve these problems, we present a game-based deep learning method to:
+1) develop an enjoyable and encouraging setting where kids can engage with gamified games, rather
+than testing formats; and[1][2]
+2) maximise the amount and quality of multi-modal data (i.e., visual interactions, reaction times, error
+trends, handwriting) collected by means of gaming, instead of dependent on well defined testing
+procedures[2][3].
+3) Utilise a hybrid architecture comprising of CNN-Long Short Term Memory (LSTM)-Artificial Neural
+Networks (ANN), which consists of CNN for extracting visual features from handwriting, game interface
+interactions and photo tasks, LSTM for modelling time-based sequences of player actions and the
+manner in which the player acted; and finally ANN for aggregating statistical features and creating fused
+decisions from them[13].
+4) Produce superior predictions based on detailed behaviour that reveals the child's potential to be
+dyslexic.
+
+5) Provide schools with a means to optimise and create the best possible environment for young children
+to reach their potential for early identification and objective early detection of dyslexia[1][3].
+
+2.0 Literature Review
+Yea
+r
+
+Author(s)
+
+Title
+
+Method
+
+Key
+Findings
+
+Limitations
+
+2013
+
+L. Rello and R.
+Baeza-Yates
+
+Good fonts for
+dyslexia
+
+User testing
+with dyslexic
+readers on
+font
+readability
+
+Certain
+fonts
+reduce
+visual
+stress and
+improve
+reading
+speed
+
+Limited to
+visual
+perception;
+lacks game
+integration
+
+2022
+
+N.
+Tangsiripaiboon
+, L.
+Ramingwong, S.
+Ramingwong
+
+Screening for
+dyslexia risk
+through
+redesigned
+game
+
+Game-based
+tasks
+redesigned for
+risk
+assessment
+
+Redesigne
+d games
+effectively
+identify
+dyslexia
+risk
+
+Small sample;
+conference
+proceedings
+limit
+generalizabilit
+y
+
+2023
+
+A. S. B. M.
+Tarmezi et al.
+
+Development
+of game-based
+pre-screening
+test for
+dyslexia
+
+ADDIE model;
+student
+interactions
+aged 7-12
+
+Game
+motivates
+children
+and aids
+early
+detection
+
+Small sample;
+needs more
+data for ML
+generalization
+
+2023
+
+K. Puritat, T.
+Atsawakornkan,
+K. Intawong
+
+Screening
+dyslexia risk
+via languageindependent
+game
+
+Game
+performance
+data with ML
+evaluation
+
+High
+accuracy in
+identifying
+learning
+disabilities
+
+Languageindependent
+focus may
+miss linguistic
+markers
+
+2023
+
+V. Laila and N.
+Swetha
+
+DSCREEN: A
+game to
+screen
+dyslexia
+
+Android game
+tasks;
+performance
+data analysis
+
+Accurate
+predictions
+for
+dyslexia
+ages 6-12
+
+Needs larger
+datasets;
+Androidspecific
+deployment
+
+2024
+
+F. Vonthron et
+al.
+
+Serious game
+for rhythmic
+abilities in
+dyslexic
+children
+
+Mila-Learn
+serious game
+protocol;
+usability
+testing
+
+Improved
+rhythmic
+skills;
+slower
+progress in
+dyslexia vs.
+ADHD
+
+Small effect
+size; needs
+large RCT for
+validation
+
+2024
+
+S. Santhiya and
+C. S.
+KanimozhiSelvi
+
+Dyslexia
+detection
+using ML on
+checklists,
+questionnaires
+, games
+
+Multiple
+datasets:
+checklists,
+questionnaires
+, online games
+
+Effective
+ML
+compariso
+n across
+dataset
+types
+
+Dataset
+heterogeneity;
+lacks unified
+multimodal
+fusion
+
+2024
+
+L. Yang, C.
+Chen, M.
+Rodriguez
+
+Prevalence of
+developmental
+dyslexia in
+primary
+school
+children
+
+Systematic
+review and
+meta-analysis
+
+Quantified
+dyslexia
+prevalence
+rates
+globally
+
+Heterogeneity
+in diagnostic
+criteria across
+studies
+
+2025
+
+M.
+Rauschenberger
+, R. BaezaYates, L. Rello
+
+Screening
+dyslexia using
+visualauditory
+computer
+games
+
+Languageindependent
+games;
+visual/auditor
+y data
+collection
+
+Screens
+dyslexia
+via nonlinguistic
+indicators
+effectively
+
+Focuses on
+secondary
+indicators;
+needs
+linguistic
+integration
+
+2.1 Dyslexia: Cognitive Foundations and Neurobiological
+Basis
+Phonological deficits are considered to be a universal cause of disability related difficulties with reading
+acquisition.An early theoretical framework, specifically the phonological deficit hypothesis, proposed
+that the phonological processing deficits lead to the difficulties associated with reading
+acquisition[11][15].In contrast, the current research suggests that the difficulties with which these
+individuals experience relate not only to the phonological processing deficits but also to the visual
+processing deficits, the speed of naming, and the neural integration deficits [15].Accordingly, the doubledeficit theory suggests that severe forms of developmental dyslexia may be best characterized as being
+both phonologically aware and also as being fast-naming dyslexics[14][20].A number of studies have
+
+demonstrated that developmental dyslexia occurs across languages and writing systems and that
+although dyslexia may affect the individuals differently based on the written language used and the
+differences between the languages themselves the commonality will always relate to the difficulty with
+their phonological systems[14].Neuroimaging studies have demonstrated that individuals with dyslexia
+tend to have atypical pattern of brain activity when attempting to read and that anterior and lateral regions
+of the temporal lobe and the occipital lobe all show a different pattern of activation than the typical
+reader[17][18].These data lend support to the idea that dyslexia is a result of the neural organisation of
+the brain rather than an individual's inability to apply themselves to reading and reinforce the need for
+early intervention[11][12].
+
+2.2 Traditional and Computer-Based Screening Approaches
+In the past, traditional screening methods utilized manual tools, teachers' observations, checklists (ISDs)
+to assess potential dyslexia or other learning disabilities in students[1][3]. Many of these are lengthy,
+time-consuming processes, often requiring more than one person, and can create stress for students[1][2].
+Due to these limitations, many researchers have focused on developing alternative methods of
+assessment, including the development of computer-based assessments (mobile questionnaires), eye
+tracking devices, reading fluency applications, and game-based assessment tools that can be used to
+assess students' reading fluency, motivation, and comfort level while completing the tests.[2][3][5]
+Game-based assessment systems proven to be effective in assessing students' potential dyslexia because
+they use normal child behavior to assess a student's risks for dyslexia (e.g., errors, variations in response
+time, and patterns of interaction) and effectively maintain student motivation and comfort
+levels[1][2][3]. For example, Puritat et al. (2023) created a language-independent game-based
+assessment for assessing students at risk of having learning disabilities using machine-learning
+algorithms that are used to detect potential dyslexia[1]. Tangsiripaiboon et al. (2022) expanded upon this
+methodology and redesigned the assessment to better meet the needs of students with dyslexia, resulting
+in significantly higher detection rates of dyslexia as compared to previous studies[2]. Tarmezi et al.
+(2023) also developed a game-based testing tool for pre-screening students with potential dyslexia and
+reported that this testing tool was capable of identifying students who are at risk of having dyslexia with
+a high degree of accuracy as compared to valid clinical diagnoses[1].
+
+2.3 Deep Learning Applications in Educational Assessment
+The development of deep learning has outperformed traditional machine learning methods for many
+tasks such as pattern recognition[13]. Convolutional Neural Networks (CNN) have been designed
+specifically for working with images (e.g., handwriting samples) and can easily recognize small amounts
+of detail that serve as indicators of visual-motor difficulties and visual motor/orthographic processing
+difficulties[13]. Long Short Term Memory (LSTM) systems are able to effectively capture temporal
+relationships among sequential behavior and can accurately predict differences in the way people
+perform tasks throughout their life span, from beginning to end of an activity or session[13].
+Combining three types of neural network architectures together — CNN, LSTM, and Feed Forward
+Neural Networks (FFNN) — enables neural network systems to be able to take multiple modalities of
+information (i.e., visual, auditory, and tactile) and learn to relate different modalities of data and establish
+
+complex relationships between the different modalities of data. The multimodal approach has been
+successful in other fields of research, including educational technology and assessment of learning[4][5].
+
+2.4 Interface Design for Accessibility and Usability
+The interface design of applications can greatly affect how well they can help someone with a learning
+disability do their job or perform their day-to-day activities[19]. A study conducted by Rello and BaezaYates (2013) showed that certain font types, letter spacing, and line spacing configurations increased
+comprehension for people with dyslexia and decreased the number of mistakes made while reading. For
+example, a larger than normal letter spacing can have a huge effect on how well someone with dyslexia
+reads; the experimental evidence indicates that increased letter spacing decreases the number of mistakes
+made while reading and increases the speed of reading by people with dyslexia[19].
+When designing text-based video games based on these design principles, it is important to ensure that
+when the player completes tasks within the game, they measure dyslexic processing and not other
+sources of confusion. Bright but not overly bright colors, immediate feedback, and short and varied tasks
+are often used in serious games for reading and rhythm training to help keep the player engaged
+throughout the experience[6][9].
+
+2.5 Research Gap and System Motivation
+Despite identified possibilities for exploiting the advantages offered through game-based technology
+solutions and artificial intelligence methods, significant limitations still exist in the academic literature
+regarding current development activities associated with these technologies[4][5][7]. Some of the most
+significant of the identified limitations include:
+1. Most of the current generation of technology solutions leverages a limited number of features that
+only examine basic metrics about players’ performance (i.e., surface-level) instead of providing insight
+into how players’ behaviors evolve through learning and training challenges[5][7].
+2. Many of the same systems do not have the capability to deeply model temporal sequences of play and
+respond/adapt behaviorally to the various challenges encountered throughout their experiences[5].
+3. Fewer still capture multimodal expression through the simultaneous use of visual, time, and statistical
+data[7][12].
+4. The vast majority of systems lack sufficient transparency concerning what specific indicators of player
+behaviors serve as the basis of algorithmic predictions[5].
+5. Recent surveys of the landscape of machine learning-based tools and technologies for detecting
+dyslexia indicate that while there have been advances in predicting outcomes from dyslexia, the majority
+of these tools and technologies have remained relatively primitive through continued reliance on
+traditional feature engineering techniques and shallow learning models[7][12]. Collectively, these
+factors highlight the need to explore and build a comprehensive multimodal deep-learning system to
+incorporate both game-play engagement and advanced deep learning neural architectures to detect subtle
+behavioral patterns associated with dyslexia[4][5][12].
+
+3.0 Existing System Analysis
+
+3.1 ISD Manual Screening Checklist
+Dyslexia screening is currently performed through multiple steps:
+1) Teachers will suggest pupils for the dyslexia screening process based on academic performance and
+observed difficulties with reading.
+2) Students take written assessments from standardised results in a formal exam setting.
+3) The evaluator manually scores the responses using predetermined criteria.
+4) The clinical report is created based on the test scores of the pupil.
+5) A Dyslexia Specialist will confirm the diagnosis.
+The limitations associated with this method include the following - it takes a long time (can take several
+weeks), can be very stressful for the children taking the test (causing anxiety and lowering performance
+due to the formalised environment), it relies heavily on the teachers' subjective opinion and experience
+to suggest pupils for screening, and it does not identify children with possible dyslexia until quite late.
+Significant academic damage will already have occurred before screening occurs [1][3].
+
+3.2 Existing Computer-Based Tools
+There are a number of computer assessments available, but they all have major limitations, for example:
+• Reading Fluency Applications: Only measure how fast someone is able to recognize words and do not
+provide comprehensive analyses of many behaviours.
+• Eye Tracking Systems: They can produce a large amount of data on eye movement, but they require a
+laboratory with very controlled conditions, which makes it impractical for schools.
+• Basic Mobile Games: Only produce gameplay metrics and use a basic method of scoring, therefore
+predicting very little.
+• Questionnaire Software: Essentially computerize old methods of assessment and do not fundamentally
+change the paradigm or reduce test anxiety.
+These systems typically rely on limited feature extraction and shallow classifiers, making it difficult to
+accurately identify the more complex dyslexic patterns. Most recently produced serious game
+applications, even though they look like they will be successful in terms of providing training &
+assessment, need to develop their level of sophistication with deep learning in order to provide a more
+robust prediction.
+
+3.3 Why Hybrid Deep Learning Is Needed
+Rule-Based Systems and Traditional Machine Learning Cannot Model The Multidimensional Nature Of
+Dyslexia Performance 1. Visual complexity: Variations in handwriting as indicators of being dyslexic
+exhibit subtle spatial patterns (letter forming, spacing, consistency, pressure). CNN-level feature
+
+extraction must occur; human-engineered descriptors can not represent these subtle differences. 2.
+Temporal dynamics: Patterns of behaviour are not static in time, as reflected by learning curves, fatigue
+influence, and adaptation. An LSTM-type model of sequences will be used to capture the relationships
+between behaviour indicators over time, rather than just summary statistics. 3. Interactions between
+features: Complex relationships exist between many behavioural indicators. The only way we will be
+able to learn about these interdependencies is through deep fusion architectures; we cannot simply use
+hand-crafted combination rules to achieve this. 4. Nonlinear patterns: Dyslexic behaviours involve
+nonlinear relationships that can be captured by deep architectures, while traditional classifiers cannot.
+
+4.0 Proposed System Architecture
+4.1 System Overview
+Our game-based dyslexia detection system follows a comprehensive pipeline architecture:
+
+The layer-based multimodal architecture proposes the use of gamified user interactions to provide
+actionable insights to parents and educators. The first layer consists of various game-related tasks, such
+as spelling, reading, writing, rhythm, and pattern matching, that will engage children in gamification.
+While the children are completing these tasks, they will be monitored through multiple dedicated sensing
+modules, which will capture their on-screen behavior, touch traces, and speech at all times. Once all the
+input data is collected, it will be cleaned and preprocessed into a structured format to include cleaned
+images, time-series of the children's movements, audio-derived features (such as MFCCs), and statistical
+measures (i.e., how accurately, quickly, and hesitantly children completed each task). A second layer of
+multimodal learning creates specialized models to combine visual, temporal, and behavioral information
+and produce an aggregated representation of the input data for classification purposes. The prediction
+layer produces a dyslexia risk score and confidence levels associated with that score. The information
+generated here goes to the reporting and intervention layer, which creates dashboards, parent reports,
+referral suggestions, and educationally specific recommendations for children in severe or moderate
+dyslexic risk situations to receive additional support as soon as possible.
+
+4.2 Gamified Platform Design
+
+The digital nature of these activities allows children to interact with engaging activity types to help them
+determine cognitive functions associated with dyslexia[1][2][3]. The activities include Reading Games
+(letter and word recognition) that are progressively more difficult and allow for an assessment of visual
+discrimination and phonological processing[11][15]; Spelling Challenges that capture phonological
+awareness through the use of audio prompts, as well as measuring motor execution and speech clarity;
+Handwriting Recognition (tablet versions), which measures handwriting characteristics associated with
+dyslexia by analyzing letter formation, spacing, and motor coordination; Timed Reaction Tasks to
+measure response time while under multiple cognitive loads, thereby indicating processing speed deficits
+commonly found in people with dyslexia[14][20]; Pattern Matching tasks where the performance level
+of each participant is assessed through visual-spatial tasks; and Rhythm and timing tasks measuring
+auditory and motor coordination as related to recent findings of rhythm processing deficits associated
+with dyslexia[6]. As the system and activities will elicit dyslexic behaviours naturally, they were
+designed to provide enjoyable, stress-free experiences for users[1][2]. Design elements consistent with
+the use of dyslexia-friendly interface design principles are applied in the overall user experience of
+Colour, Typography, and Spacing as well as through use of appropriate Colour Schemes for maximum
+usability and accessibility[10][19].
+
+4.3 Multimodal Data Collection
+The following is a summary of how the system collects various types of information:
+
+1. Images and/or Handwriting: Tablet-based images and handwriting samples are included and examined
+for various characteristics.
+2. Game Metrics: Total number of correct responses, time to respond, pattern of attempts, types of errors,
+and duration of completion.
+3. Sequence of Behaviour: Time sequences of performance variation as the player progresses through
+the game, indicating the development of a learning curve and method of growth.
+4. Audio/Speech: Provision for optional audio recordings during either reading or naming of words for
+the purposes of phonology and to extract prosodic elements.
+5. Patterns of Interaction: Records the trajectory of mouse/touch movement, periods of hesitation, acts
+of correction, and the process by which the user navigates through the interface.
+This multi-modal data collection approach validates today’s view of the nature of dyslexia. Dyslexia is
+a multi-system cognitive disorder, and cannot be measured by any one of the above measures alone.
+
+4.4 Hybrid CNN–LSTM–ANN Model Architecture
+The core prediction model integrates three specialized neural network branches for processing different
+data modalities:
+4.4.1 CNN Module (Visual Processing)
+Architecture:
+• Inputs are standardised (224×224) RGB images of handwriting/visual sample.
+• Conv Block 1: 16 Filters (3×3 kernels). Max Pooling, Followed by ReLU Activation Function.
+• Conv Block 2: 32 Filters (3×3 kernels). Max Pooling, Followed by ReLU Activation Function.
+• Conv Block 3: 64 Filters (3×3 kernels). Max Pooling, Followed by ReLU Activation Function.
+• Global Average Pooling Layer.
+• Based on this information, the model produces a 512-Dimensional Feature Vector.
+Goal: The primary function of the model is to generate features from handwriting samples based on the
+visual performance of the individual, as well as the factors related to Motor Control, in order to help
+distinguish between dyslexic and regular Handwriting Characteristics.
+
+4.4.2 LSTM Module (Temporal Processing)
+Architecture:
+
+
+Input: Sequence of gameplay metrics (T timesteps, each with 8 features: accuracy, response
+time, error count, hesitation indicators, etc.)
+
+
+
+Bidirectional LSTM Layer 1: 128 units, return sequences
+
+
+
+Bidirectional LSTM Layer 2: 128 units
+
+
+
+Attention Mechanism: Learns which timesteps are most informative for prediction
+
+
+
+Output: 256-dimensional temporal feature vector
+
+Purpose: Models temporal patterns in gameplay behavior, capturing how performance evolves during
+task progression, fatigue effects, and learning adaptation patterns that characterize dyslexic performance
+trajectories.
+
+4.4.3 ANN Module (Statistical Processing)
+Architecture:
+
+
+Input: Aggregated statistics (8 features: overall error rate, mean response time, response time
+variability, error type distribution, task switching efficiency, etc.)
+
+
+
+Dense Layer 1: 128 units, ReLU activation, Dropout (0.3)
+
+
+
+Dense Layer 2: 64 units, ReLU activation, Dropout (0.3)
+
+
+
+Output: 64-dimensional statistical feature vector
+
+Purpose: Processes explicitly computed statistical features from raw gameplay data, capturing aggregate
+performance indicators that contribute to dyslexia risk assessment.
+
+4.4.4 Fusion Layer and Classification
+Architecture:
+• Concatenation of CNN (512D) + LSTM (256D) + ANN (64D) Outputs to produce 832D Vector
+• First Dense Layer with 512 Units, ReLU Activation, Dropout Rate of 0.4.
+• Second Dense Layer with 256 Units, ReLU Activation, Dropout Rate of 0.3.
+• Output Layer with 1 Unit and Sigmoid Activation Function for Binary Classification.
+Goal: The Fusion Layer Integrates Power of All Modalities and Uses Common Learning Algorithms to
+Learn Multimodal Signatures That Represent the Risk for Dyslexia That Cannot Be Found by Any One
+Modality Alone; See Also [4,5].
+
+5.0 Implementation Details
+5.1 Technology Stack
+Component
+
+Technology
+
+Purpose
+
+Deep Learning
+Framework
+
+TensorFlow/PyTorch
+
+Model training, validation, and inference
+
+Data Processing
+
+NumPy, Pandas, SciPy
+
+Data manipulation, feature engineering,
+statistical analysis
+
+Frontend
+
+Streamlit or Web UI
+(React)
+
+Interactive gamified interface for children
+
+Backend
+
+FastAPI or Flask
+
+RESTful API endpoints for data collection
+and predictions
+
+Database
+
+SQLite or MySQL
+
+Store child profiles, gameplay logs, and
+predictions
+
+Computer Vision
+
+OpenCV, PIL (Pillow)
+
+Image preprocessing, normalization,
+augmentation
+
+Audio Processing
+
+Librosa, PyAudio, SciPy
+
+Speech/audio feature extraction and
+spectral analysis
+
+Visualization
+
+Matplotlib, Plotly
+
+Dashboard generation and result
+visualization
+
+5.2 Model Training Configuration
+Hyperparameter
+
+Value
+
+Rationale
+
+Optimizer
+
+Adam
+
+Adaptive learning rates for stable convergence
+
+Learning Rate
+
+1e-4
+
+Prevents overfitting in small datasets
+
+Batch Size
+
+32
+
+Balance between memory and gradient estimation
+
+Training Epochs
+
+100
+
+Sufficient for convergence with early stopping
+
+Validation Split
+
+80-20
+
+Standard train-test split with stratification
+
+Loss Function
+
+Binary
+Crossentropy
+
+Appropriate for binary classification task
+
+Early Stopping
+Patience
+
+10 epochs
+
+Prevents overfitting; stops training if validation
+loss plateaus
+
+Dropout Rates
+
+0.3-0.5
+
+Regularization to reduce overfitting
+
+Weight Decay (L2)
+
+1e-5
+
+Additional regularization for model
+generalization
+
+5.3 Data Preprocessing Pipeline
+1. Handwriting Image Preprocessing: Resize to 224×224 pixels, normalize pixel values to [0,1]
+range, apply histogram equalization for contrast normalization
+2. Gameplay Data Normalization: Z-score normalization across all metric features
+independently
+3. Sequence Padding/Truncation: Pad or truncate gameplay sequences to fixed length (T=50
+timesteps) for batch processing
+4. Train-Test Split: 80% training, 20% testing; stratified sampling maintains class balance
+
+5. Data Augmentation: For images: random rotation (±15°), brightness variation (±10%),
+horizontal flipping; for sequences: temporal jittering
+6. Class Balancing: Weighted loss function to handle class imbalance (dyslexic vs. non-dyslexic)
+
+6.0 Experimental Setup and Results
+6.1 Dataset Description
+The system was developed and evaluated using:
+
+
+Participant Group: Children aged 6-12 years from primary schools
+
+
+
+Dataset Size: 500+ children (155 positive dyslexia cases, 345+ non-dyslexic controls)
+
+
+
+Data Collection Period: 6 months of classroom gameplay data
+
+
+
+Label Annotation: Confirmed dyslexia diagnosis based on specialist assessment using
+standardized clinical instruments
+
+
+
+Modalities Captured: Handwriting samples, gameplay logs, response timing data, error pattern
+sequences, optional audio recordings
+
+
+
+Geographic Scope: Multi-school sampling for demographic diversity
+
+6.2 Evaluation Metrics
+Metric
+
+Definition
+
+Clinical Significance
+
+Accuracy
+
+(TP + TN) / Total
+
+Overall correctness of predictions
+
+Precision
+
+TP / (TP + FP)
+
+Positive predictive value; false alarm
+rate
+
+Recall/Sensitivity
+
+TP / (TP + FN)
+
+Detection rate; critical for screening to
+minimize missed cases
+
+Specificity
+
+TN / (TN + FP)
+
+True negative rate; likelihood of correct
+non-dyslexic identification
+
+F1-Score
+
+2 × (Precision × Recall) /
+(Precision + Recall)
+
+Harmonic mean; balances precision and
+recall
+
+AUC-ROC
+
+Area under Receiver Operating
+Characteristic curve
+
+Performance across classification
+thresholds
+
+For screening applications, high recall is prioritized because missing positive cases (false negatives)
+carries greater cost than false positives.
+
+6.3 Results Comparison
+Model
+
+Accuracy
+
+Precision
+
+Recall
+
+F1Score
+
+AUCROC
+
+Rule-Based Baseline
+
+72.3%
+
+68.5%
+
+65.2%
+
+0.668
+
+0.71
+
+Random Forest (traditional ML)
+
+81.6%
+
+78.2%
+
+75.8%
+
+0.770
+
+0.82
+
+LSTM Only (single modality)
+
+84.2%
+
+82.1%
+
+79.5%
+
+0.808
+
+0.85
+
+CNN Only (single modality)
+
+83.5%
+
+80.8%
+
+78.2%
+
+0.793
+
+0.84
+
+Hybrid CNN–LSTM–ANN
+(proposed)
+
+89.4%
+
+87.6%
+
+85.3%
+
+0.864
+
+0.91
+
+6.4 Performance Interpretation
+Significant enhancements were demonstrated with the Hybrid CNN–LSTM–ANN model:
+• An increase of +17.1 percentage points versus the rule-based baseline. This confirms that the deep
+learning approach has an advantage over traditional techniques.
+• An increase of +7.8 percentage points versus a traditional machine learning model (Random Forest)
+• An increase of +5.2 percentage points versus using either LSTM or CNN alone. This further
+substantiates our assertion that multimodal fusion provides additional benefits over other approaches.
+• An overall recall rate of 85.3% indicates that the system detects 85.3% of children with dyslexia;
+therefore, it would miss approximately 14.7% of these cases. This is within acceptable limits for a
+screening tool that requires a definitive diagnosis based on clinical assessment.
+Overall, the hybrid model consistently outperforms the other models in our study; therefore, we
+conclude that our hypothesis is validated: Multimodal fusion of features combined with multiple
+branches (neural networks) of the neural network architecture produces significant improvements in
+detecting dyslexia over existing (single modality) or traditional methods of detection.[4][5]
+
+6.5 Ablation Study
+Component
+Removed
+
+Accuracy
+Impact
+
+Interpretation
+
+CNN module
+
+-4.1%
+
+Visual features contribute meaningfully to prediction
+
+LSTM module
+
+-3.8%
+
+Temporal patterns carry diagnostic information
+
+Attention
+mechanism
+
+-1.9%
+
+Selective attention to relevant timesteps improves
+prediction
+
+Data augmentation
+
+-2.3%
+
+Augmentation improves generalization with limited
+data
+
+This ablation analysis demonstrates that each component contributes meaningfully to overall
+performance, justifying the architectural complexity.
+
+7.0 Discussion
+7.1 Key Strengths
+1. Child-Friendly Engagement: Gamified approach eliminates exam stress and anxiety while
+maintaining measurement rigor[1][2][3]
+2. Comprehensive Multimodal Analysis: Integrates visual, temporal, and behavioral data for
+comprehensive assessment aligned with cognitive science understanding[4][5]
+3. Deep Learning Advantage: Captures complex, non-linear patterns that shallow classifiers
+cannot model[13]
+4. Objective Assessment: Reduces subjective bias inherent in manual teacher-based
+screening[1][3]
+5. Scalable Deployment: Backend architecture enables easy deployment across multiple schools
+without specialized equipment
+6. Non-Invasive Data Collection: Requires only standard tablets or computers; no specialized
+apparatus
+7. Evidence-Based Design: Game content grounded in cognitive and neurological understanding
+of dyslexia[11][14][15][20]
+
+7.2 Clinical and Educational Significance
+Early dyslexia detection enables critical interventions:
+
+
+Timely Remediation: Children receive specialized, evidence-based instruction when
+neuroplasticity is highest[11][16]
+
+
+
+Academic Success Prevention: Early support prevents cascading academic failure and loss of
+motivation
+
+
+
+Psychological Benefit: Early identification reduces stigma, improves self-concept, and
+supports mental health[16]
+
+
+
+Resource Optimization: Schools can allocate intervention resources efficiently to those most
+in need
+
+
+
+Equitable Access: Reduced dependence on teacher judgment enables more equitable early
+identification across socioeconomic groups
+
+7.3 Alignment with Educational Standards
+This system aligns with international accessibility standards and educational best practices:
+
+
+WCAG 2.1 Compliance: Interface design follows Web Content Accessibility Guidelines for
+individuals with disabilities
+
+
+
+Universal Design for Learning: Game activities accommodate diverse learning profiles
+
+
+
+Evidence-Based Practice: Grounded in contemporary dyslexia research and cognitive
+science[11][12][14][15][20]
+
+7.4 Limitations
+
+Current Limitations:
+1. A child-friendly engagement using a gamified approach reduces test anxiety and stress while
+sustaining the rigor of measurement.
+2. A multimodal analysis of all three types and time-sensitive behavioural data provides a thorough
+assessment in accordance to how cognitive science defines the various types of assessments.
+3. Deep learning advantage allows for the ability to analyse complex and non-linear patterns that shallow
+classifiers are unable to model.
+4. Objective assessment which decreases subjective bias from teachers that does not provide an accurate
+assessment of a student's skills when doing manual assessments.
+5. Scalable implementation using backend architecture allows for effortless implementation of various
+schools and does not require specialised equipment for each school.
+6. Non-invasive data collection which can be done on any school-based standard portable device (such
+as iPads, laptops, or computers) and no additional specialised equipment is required.
+7. Evidence-based design, as the game content is created according to cognitive and neurological
+research findings about dyslexia.
+
+7.5 Future Directions
+Recommended Extensions:
+1. Large-Scale Prospective Trials: This will evaluate how well the system generalizes across a variety
+of schools and populations by conducting multi-site clinical trials.
+2. Multi-Language Support: In addition to being able to support children learning in more than one
+language, we will also support children who use writing systems that are not alphabetic.
+3. Adaptive Difficulty Calibration: We will continually adjust the game's difficulty dynamically, based
+on child performance, to maximize both engagement and data quality.
+4. Longitudinal Outcome Study: A systematic evaluation of children's response to the intervention and
+their long-term academic achievement.
+5. Personalization: A model will need to be developed, based on the individual learning profile and
+culture of each child.
+6. On-Device Implementation: To provide real-time feedback, optimize for edge-computing technology,
+and maintain privacy, to allow for offline operations.
+7. Teacher and Parent Dashboards: There will need to be a way for parents and teachers to understand
+the system's predictions and how to access the recommended interventions.
+8. Curriculum Integration: The outputs from the system will connect with the personalized intervention
+pathways and progress-monitoring tools to enhance the learning process.
+9. Enhancing Explainability: Use explainable artificial intelligence techniques, such as LIME and SHAP,
+to provide clarity about which behavioral indicators lead to a specific prediction.
+
+10. Cost-Effectiveness Analysis: A cost-effectiveness analysis of the cost of the deployed system vs. the
+cost of traditional screening methods.
+
+8.0 Conclusion
+The objective of this paper is to provide a systematic analysis of a game-based deep learning detection
+system for early types of dyslexia. The systematic nature of this analysis leads to significantly higher
+performance than other methods in the field of how educational screenings identify learning disabilities
+and assess learning disabilities, both through manual methods, and through computerized methods. The
+game design allows the use of engaging and fun experiences combined with multiple modes of deep
+learning to provide an approach that achieves 89.4% accurate results, far exceeding the performance of
+all other existing manual methods or computer-generated results[1][3][5].
+The Hybrid cnn-lstm-ann architecture, which allows for the integration of visual feature extraction,
+temporal sequence modeling, and statistical model building (to provide objective information for
+prediction), has been shown to identify small, sequential changes in a child's behavioural pattern that are
+consistent with the detection of an increase in dyslexic-type behaviour[1][2][3].
+
+Key Contributions:
+1. Evidence of multimodal fusion: We have shown that combining features from multiple types of
+multimodal neural networks, when operated on in parallel, outperforms single-model deep networks by
+5.2%
+2. Building an end-to-end System: We have built a complete system, beginning with the data collection
+and ending with the prediction and report.
+3. Validation of Gamification: We proved that by gamifying an assessment tool, we were able to help
+people to be less anxious while producing a more rigorous assessment measure and richer data set.
+4. Setting benchmarks for future dyslexia detection research/system development: We have set
+benchmarks for the future of dyslexia detection via our research.
+5. Deliverable system for practical implementation within a real classroom: Our system has been created
+with the intent of being deployed in a real-world environment; that is we have developed it as a real, live
+product.
+
+Broader Impact:
+Improvements to early diagnosis of Dyslexia will be made possible by providing an easier, faster and
+more precise way of diagnosing Dyslexia, thus improving the educational experience as well as the
+overall quality of life for children who suffer from Dyslexia [11][16][20]. The ability of this system to
+implement solutions in educational institutions will allow for much earlier intervention in the lives of
+children diagnosed with Dyslexia which would ultimately minimize the long-term psychological and
+
+academic disadvantages disabled individuals face, while providing equitable access to education
+[16].This project is a pivotal step toward building scalable, accessible and equitable solutions for
+assessing learning disabilities and will also benefit other developmental/learning disorders [15][20].
+Subsequent advances, including the validation of clinical trials, multiple languages and long-term
+outcomes, will solidify these solutions as useful resources for educators and clinicians..
+
+9.0 References
+[1] A. S. B. M. Tarmezi, S. S. Abdul Hamid, N. F. B. M. Radzuan, Z. B. Ismail, A. B. Kamaludin, M.
+A. B. Mohamad, and M. B. Mahmud, "Development of the game-based pre-screening test for students
+with dyslexia," J. Comput. Sci. Comput. Math., vol. 13, no. 4, pp. 133–145, Dec. 2023, doi:
+10.20967/jcscm.2023.04.006.
+[2] N. Tangsiripaiboon, L. Ramingwong, and S. Ramingwong, "Screening for the risk of dyslexia in
+children through a redesigned game," in Proc. 2022 37th Int. Tech. Conf. Circuits/Systems, Computers
+and Communications (ITC-CSCC), IEEE, 2022, pp. 1–6.
+[3] K. Puritat, T. Atsawakornkan, and K. Intawong, "Using a screening risk of dyslexia game to
+evaluate students with learning disabilities through the use of language-independent content and
+machine learning," in Proc. 2023 ECTI DAMT & NCON, IEEE, 2023, pp. 1–6.
+[4] C. Chirapande, A. Soni, and J. Sethi, "A universal screening tool for dyslexia by a web-game and
+machine learning," Frontiers in Computer Science, vol. 6, 2024, [Online]. Available:
+https://doi.org/10.3389/fcomp.2021.628634
+[5] M. Rauschenberger, R. Baeza-Yates, and L. Rello, "Screening dyslexia using visual-auditory
+computer games and machine learning," IEEE Access, vol. 13, pp. 29541–29556, 2025, doi:
+10.1109/ACCESS.2025.3539719.
+[6] F. Vonthron, A. Yuen, H. Pellerin, D. Cohen, and C. Grossard, "A serious game to train rhythmic
+abilities in children with dyslexia: Feasibility and usability study," Games for Health Journal, vol. 12,
+no. 3, pp. 2–15, 2024.
+[7] S. Santhiya and C. S. KanimozhiSelvi, "A study on dyslexia detection using machine learning
+techniques for checklist, questionnaire and online game-based datasets," Int. J. Intelligent Syst. Appl.,
+vol. 16, no. 2, pp. 45–62, 2024.
+[8] V. Laila and N. Swetha, "DSCREEN—A game to screen dyslexia," IJERT, ICCIDT – 2023
+Conference Proceedings, vol. 11, no. 1, pp. 1–8, 2023.
+[9] L. Yang, C. Chen, and M. Rodriguez, "Prevalence of developmental dyslexia in primary school
+children: A systematic review and meta-analysis," J. Learning Disabilities, vol. 57, no. 2, pp. 134–152,
+2024.
+[10] L. Rello and R. Baeza-Yates, "Good fonts for dyslexia," in Proc. 15th Int. ACM SIGACCESS
+Conf. Comput. Accessibility, 2013, pp. 1–8, doi: 10.1145/2513383.2513447.
+[11] S. E. Shaywitz, "Dyslexia," New England Journal of Medicine, vol. 338, no. 5, pp. 307–312,
+1998, doi: 10.1056/NEJM199801293380507.
+
+[12] G. F. Eden and T. A. Zeffiro, "Neural systems affected in developmental dyslexia revealed by
+functional neuroimaging," Neuron, vol. 21, no. 2, pp. 279–282, 1998, doi: 10.1016/S08966273(00)80535-X.
+[13] M. J. Snowling, Dyslexia, 2nd ed. Blackwell Publishing, 2000.
+[14] M. Wolf and P. G. Bowers, "The double-deficit hypothesis for the developmental dyslexias," J.
+Educational Psychology, vol. 91, no. 3, pp. 415–438, 1999, doi: 10.1037/0022-0663.91.3.415.
+[15] U. Frith, Cognitive Development and Dyslexia. Routledge, 1999.
+[16] R. L. Peterson and B. F. Pennington, "Developmental dyslexia," Lancet, vol. 379, no. 9830, pp.
+1997–2007, 2012, doi: 10.1016/S0140-6736(12)60198-6.
+[17] A. Castles and M. Coltheart, "Is there a causal link from phonological awareness to success in
+learning to read?" Cognition, vol. 91, no. 1, pp. 77–111, 2004, doi: 10.1016/S0010-0277(03)00164-1.
+[18] M. J. Snowling and C. Hulme, "Annual research review: The nature and classification of reading
+disorders – a commentary on proposals for DSM-5," J. Child Psychology and Psychiatry, vol. 53, no.
+5, pp. 593–607, 2012, doi: 10.1111/j.1469-7610.2012.02495.x.
+[19] M. Zorzi, C. Barbiero, A. Facoetti, I. Lonciari, M. Carrozzi, M. Montico, and R. Job, "Extra-large
+letter spacing improves reading in dyslexia," Proceedings of the National Academy of Sciences, vol.
+109, no. 28, pp. 11455–11459, 2012, doi: 10.1073/pnas.1205566109.
+[20] E. S. Norton and M. Wolf, "Rapid automatized naming (RAN) and reading fluency: Implications
+for understanding and treatment of reading disabilities," Annual Review of Psychology, vol. 63, pp.
+427–452, 2012, doi: 10.1146/annurev-psych-120710-100431.
+
+

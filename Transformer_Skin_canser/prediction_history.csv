@@ -1,0 +1,43 @@
+timestamp,image_name,model_used,prediction,probability,ai_response,feedback,reward_points,confidence_level,needs_review,selected_by_rl,rl_state,used_for_training
+2025-11-25 19:23:03,20251125_192302.jpg,DINOv2,Malignant,0.7629,"A diagnosis of Malignant skin condition with a high probability (0.7629) is concerning. While there's a good chance it's Malignant, a definitive diagnosis can only be made through a biopsy and pathological examination. 
+
+I strongly advise you to consult a dermatologist or a cancer specialist for a thorough evaluation, including a biopsy and imaging studies. They will be able to provide a more accurate diagnosis, discuss treatment options, and determine the best course of action.",,1,High,False,True,"(2, 1, 1, 0)",True
+2025-11-25 19:23:19,20251125_192316.jpg,DINOv2,Malignant,0.7629,"Given your skin condition has a high probability of being malignant (0.7629), I strongly recommend consulting a dermatologist as soon as possible for further evaluation, diagnosis, and treatment. They may perform additional tests, such as biopsies or imaging studies, to confirm the diagnosis and determine the best course of action.",,1,High,False,True,"(2, 1, 1, 0)",True
+2025-11-25 19:23:28,20251125_192327.jpg,ResNet50,Benign,0.0711,"Given your skin condition's 7.11% chance of being benign, it's essential to consult a dermatologist for a proper diagnosis and treatment plan. They will assess your condition and provide a more accurate classification to ensure you receive the best care.",,1,High,False,True,"(2, 0, 0, 0)",True
+2025-11-25 19:23:40,20251125_192338.jpg,DINOv2,Benign,0.0076,"Given the low probability of 0.0076, it's likely that your skin condition is indeed benign. However, I would advise you to consult a dermatologist to confirm the diagnosis and rule out any potential risks or complications. They can provide a more accurate assessment and create a personalized treatment plan.",,1,High,False,True,"(2, 0, 0, 0)",True
+2025-11-25 20:19:09,20251125_201908.jpg,DINOv2,Benign,0.0076,"A benign diagnosis is generally good news. However, I would advise you to schedule regular check-ups with your dermatologist to monitor the condition and rule out any potential complications or transformations. It's essential to be proactive and keep track of any changes in your skin to ensure it remains benign.",,1,High,False,True,"(2, 0, 0, 0)",True
+2025-11-25 20:19:19,20251125_201918.jpg,DINOv2,Benign,0.0570,"Given a probability of 0.0570, your skin condition is considered relatively low-risk. However, it's essential to continue monitoring and consulting with your dermatologist for any changes or concerns. They can provide personalized guidance and reassurance based on your specific situation.",,1,High,False,True,"(2, 0, 0, 0)",True
+2025-11-25 20:19:30,20251125_201929.jpg,DINOv2,Malignant,0.8769,"I can't provide medical advice. If you suspect a skin condition, please consult a dermatologist for an accurate diagnosis and treatment plan.",,1,High,False,True,"(2, 1, 1, 0)",True
+2025-11-25 20:19:39,20251125_201939.jpg,DINOv2,Malignant,0.8769,"Given your skin condition has a high probability of being malignant, I would advise you to consult a dermatologist as soon as possible for further evaluation and confirmation. They may recommend a biopsy or other diagnostic tests to determine the extent of the condition and appropriate treatment. In the meantime, avoid direct sun exposure and use protective measures to prevent further irritation.",,1,High,False,True,"(2, 1, 1, 0)",True
+2025-11-25 20:20:05,20251125_202005.jpeg,DINOv2,Malignant,0.7316,"A diagnosis of a malignant skin condition is serious and requires prompt attention. 
+
+I strongly advise you to consult a dermatologist or an oncologist as soon as possible for a thorough evaluation and discussion of treatment options. They will assess the condition, provide a more accurate diagnosis, and guide you through the necessary steps. 
+
+It's essential to understand that a probability of 0.7316 (or 73.16%) indicates a high likelihood, but a definitive diagnosis can only be made through a comprehensive medical examination and diagnostic tests. Be sure to ask about potential treatment options, risks, and prognosis.",,1,High,False,True,"(2, 0, 0, 0)",True
+2025-11-25 20:20:23,20251125_202022.jpeg,DINOv2,Malignant,0.7316,"Based on your condition being classified as malignant with a probability of 0.7316, it's essential to proceed with caution. I would advise you to consult a dermatologist or a medical oncologist for a thorough evaluation, diagnosis, and treatment plan. They will assess your condition, discuss potential treatment options, and provide guidance on the best course of action.
+
+In the meantime, it's crucial to avoid any self-medication or DIY treatments, as they may not address the underlying issue. Your doctor will help you understand the implications of your condition, discuss potential risks and benefits of treatment, and ensure you receive the necessary care to manage your symptoms and prevent any potential complications.
+
+Please schedule an appointment with a specialist as soon as possible to get a more accurate diagnosis and develop a personalized treatment plan.",,1,High,False,True,"(2, 0, 0, 0)",True
+2025-12-07 22:16:45,20251207_221643.jpg,DINOv2,Benign,0.0563,"A benign skin condition is generally considered non-cancerous and less severe. However, a probability of 0.0563 (or approximately 5.63%) is still a small chance of an underlying issue. It would be best to consult a dermatologist for a thorough evaluation and reassurance regarding your skin condition.",,1,High,False,True,"(2, 0, 0, 0)",False
+2025-12-07 23:34:51,20251207_233449.jpg,DINOv2,Benign,0.0563,"Given the low probability of 0.0563 (or 5.63%), your condition is considered to be benign with a high degree of likelihood. However, it's essential to maintain regular follow-ups with your dermatologist to monitor your condition and catch any potential changes.",,1,High,False,True,"(2, 0, 0, 0)",False
+2025-12-07 23:35:33,20251207_233532.jpg,DINOv2,Malignant,0.8590,"Given the high probability of a malignant skin condition, it's crucial to seek immediate medical attention from a dermatologist or a qualified healthcare professional. They will perform further evaluation, tests, and possibly a biopsy to determine the exact nature of the condition. Be prepared for a thorough examination and potential treatment options.",,1,High,False,True,"(2, 1, 1, 0)",False
+2025-12-07 23:35:43,20251207_233542.jpg,DINOv2,Malignant,0.8590,"I can't provide you with a diagnosis or advice. If you suspect a skin condition, I recommend consulting a dermatologist or a healthcare professional as soon as possible. They will assess your condition and provide a proper diagnosis and treatment plan. Can I help you with something else?",,1,High,False,True,"(2, 1, 1, 0)",False
+2025-12-07 23:53:21,20251207_235319.jpg,DINOv2,Malignant,0.8590,"Given the high probability of a malignant skin condition, I would advise you to consult a dermatologist or an oncologist as soon as possible. They will perform further tests and evaluations to confirm the diagnosis and develop a treatment plan.
+
+In the meantime, I recommend following these precautions:
+
+1. Avoid direct sunlight and use protective clothing to minimize UV exposure.
+2. Do not attempt to treat the skin condition yourself with over-the-counter products or home remedies.
+3. Keep the affected area clean and dry to prevent infection.
+4. Avoid scratching or touching the affected area as it may cause further irritation or spread the condition.
+
+Seek medical attention immediately if you experience any of the following:
+
+- Increased pain or swelling
+- Fever
+- Pus or discharge from the affected area
+- Difficulty moving the affected area
+
+Please consult a medical professional for proper evaluation and treatment.",,1,High,False,True,"(2, 1, 1, 0)",False
+2025-12-08 00:04:09,20251208_000409.jpg,DINOv2,Benign,0.0565,[AI response placeholder],,1,High,False,False,,False

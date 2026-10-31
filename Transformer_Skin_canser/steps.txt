@@ -1,0 +1,10 @@
+# first time
+pip install uv
+uv venv --python 3.11.13
+./venv/Scripts/activate.bat
+uv init
+uv add -r requirements.txt
+
+# Every time
+./venv/Scripts/activate.bat
+uv run main.py

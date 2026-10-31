@@ -1,0 +1,1669 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SkinCare AI — Medical Image Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root{
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --primary-light: #3b82f6;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --warning: #f59e0b;
+      --bg: #f8fafc;
+      --bg-secondary: #ffffff;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+    }
+
+    .logo-text h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .logo-text p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .header-badge {
+      background: linear-gradient(135deg, #e0e7ff, #dbeafe);
+      color: var(--primary);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 2rem;
+      height: calc(100vh - 80px);
+      overflow: hidden;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 420px 1fr 380px;
+      gap: 1.5rem;
+      align-items: start;
+      height: 100%;
+    }
+
+    .panel {
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      max-height: 100%;
+    }
+
+    .panel-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      background: linear-gradient(to bottom, #ffffff, #fafbfc);
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .panel-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .panel-body {
+      padding: 1.5rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    /* Upload Area */
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      background: var(--bg);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+    }
+
+    .upload-area:hover {
+      border-color: var(--primary);
+      background: #eff6ff;
+    }
+
+    .upload-area input {
+      display: none;
+    }
+
+    .upload-icon {
+      font-size: 48px;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    .upload-text {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-hint {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    img.preview {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      margin-top: 1rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #eff6ff;
+      border-color: var(--primary);
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    /* Form Elements */
+    select, input[type=text], textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 13px;
+    }
+
+    /* Result Card */
+    .result-card {
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      border: 1px solid #bae6fd;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .result-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .result-content {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.375rem 0.75rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .badge-success {
+      background: var(--success-light);
+      color: #065f46;
+    }
+
+    .badge-danger {
+      background: var(--danger-light);
+      color: #991b1b;
+    }
+
+    .badge-neutral {
+      background: var(--border-light);
+      color: var(--text-secondary);
+    }
+
+    /* Chat */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background: var(--bg);
+      min-height: 0;
+    }
+
+    .msg {
+      max-width: 80%;
+      padding: 1rem 1.25rem;
+      border-radius: 16px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+      background: white;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .composer {
+      display: flex;
+      gap: 0.75rem;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border-light);
+      background: white;
+      flex-shrink: 0;
+    }
+
+    .composer textarea {
+      flex: 1;
+      min-height: 56px;
+      max-height: 120px;
+    }
+
+    /* Metrics */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .metric-card {
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      border: 1px solid #bae6fd;
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.25rem;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* History */
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-height: 500px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .history-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .history-item:hover {
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+      transform: translateX(4px);
+    }
+
+    .history-thumb {
+      width: 60px;
+      height: 60px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .history-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .history-disease {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 0.25rem;
+    }
+
+    .history-disease.malignant {
+      color: var(--danger);
+    }
+
+    .history-disease.benign {
+      color: var(--success);
+    }
+
+    .history-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .history-feedback-preview {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: auto;
+      box-shadow: var(--shadow-xl);
+      animation: modalSlideUp 0.3s ease;
+    }
+
+    @keyframes modalSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, #ffffff, #fafbfc);
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      background: var(--bg);
+      border: none;
+      color: var(--text-secondary);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--danger-light);
+      color: var(--danger);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-image {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-info-item {
+      background: var(--bg);
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .modal-info-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-info-value {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-primary);
+    }
+
+    .modal-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-section-title {
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-feedback-box {
+      background: var(--bg);
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      min-height: 60px;
+      line-height: 1.6;
+      color: var(--text-primary);
+    }
+
+    .modal-no-feedback {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Reward Popup Modal */
+    .reward-modal-content {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 24px;
+      max-width: 450px;
+      width: 100%;
+      padding: 3rem 2rem 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: rewardPopIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .reward-modal-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #f59e0b, #fbbf24, #fcd34d);
+    }
+
+    @keyframes rewardPopIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(30px);
+      }
+      60% {
+        transform: scale(1.05);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .reward-coin-container {
+      margin: 0 auto 1.5rem;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .reward-coin {
+      font-size: 80px;
+      animation: coinTilt 2s ease-in-out infinite;
+      filter: drop-shadow(0 10px 20px rgba(245, 158, 11, 0.3));
+    }
+
+    @keyframes coinTilt {
+      0%, 100% {
+        transform: rotateY(0deg) rotateX(0deg);
+      }
+      25% {
+        transform: rotateY(-25deg) rotateX(10deg) scale(1.1);
+      }
+      50% {
+        transform: rotateY(0deg) rotateX(-10deg);
+      }
+      75% {
+        transform: rotateY(25deg) rotateX(10deg) scale(1.1);
+      }
+    }
+
+    .reward-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .reward-disease {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.5rem;
+    }
+
+    .reward-confidence {
+      background: linear-gradient(135deg, #e0e7ff, #dbeafe);
+      padding: 0.75rem 1.5rem;
+      border-radius: 12px;
+      margin: 0 auto 1.5rem;
+      display: inline-block;
+    }
+
+    .reward-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-right: 0.5rem;
+    }
+
+    .reward-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .reward-points {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      padding: 1rem 2rem;
+      border-radius: 16px;
+      margin: 0 auto 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);
+    }
+
+    .points-text {
+      font-size: 36px;
+      font-weight: 800;
+      color: #f59e0b;
+      animation: pointsPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes pointsPulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    .points-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #92400e;
+    }
+
+    .reward-message {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .reward-close-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 0.875rem 2rem;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+    }
+
+    .reward-close-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+    }
+
+    .reward-close-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Low confidence variant */
+    .reward-modal-content.low-confidence .reward-coin {
+      animation: normalBounce 2s ease-in-out infinite;
+    }
+
+    @keyframes normalBounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .reward-modal-content.low-confidence .reward-points {
+      background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+    }
+
+    .reward-modal-content.low-confidence .points-text {
+      color: var(--text-secondary);
+      animation: none;
+    }
+
+    .reward-modal-content.low-confidence::before {
+      background: linear-gradient(90deg, var(--text-muted), var(--border));
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .app {
+        grid-template-columns: 380px 1fr 340px;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+      
+      .panel:nth-child(3) {
+        order: 2;
+      }
+      
+      .panel:nth-child(1) {
+        order: 3;
+      }
+    }
+
+    /* Status indicator */
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <div class="logo-icon">🔬</div>
+        <div class="logo-text">
+          <h1>SkinCare AI</h1>
+          <p>Medical Image Analysis Platform</p>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="status-dot"></span>
+        AI Models Active
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container">
+    <div class="app">
+      <!-- Left Panel: Prediction Controls -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">🩺 Image Analysis</h2>
+          <p class="panel-subtitle">Upload a skin lesion image for AI-powered diagnosis</p>
+        </div>
+        <div class="panel-body">
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">Click to browse or drag & drop</div>
+            <div class="upload-hint">Supports JPG, PNG • Max 6MB</div>
+            <input id="fileInput" type="file" accept="image/*" />
+          </div>
+          <img id="preview" class="preview" style="display:none" />
+
+          <div class="form-group">
+            <label class="form-label">AI Model Selection</label>
+            <select id="modelSelect">
+              <option value="auto">🤖 RL Agent (Auto-Select)</option>
+              <option value="dino">🧠 DINOv2 - Vision Transformer</option>
+              <option value="resnet">🔬 ResNet50 - Convolutional Network</option>
+            </select>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:0.25rem;">
+              RL Agent learns which model works best for each image type
+            </div>
+          </div>
+
+          <button id="predictBtn" class="btn btn-primary btn-full">
+            <span>🔍</span>
+            Analyze Image
+          </button>
+
+          <div class="result-card" id="resultCard" style="display:none; margin-top:1rem">
+            <div class="result-title">Diagnosis Result</div>
+            <div class="result-content" id="lastResult">—</div>
+            <div id="rewardInfo" style="display:none; margin-top:0.75rem; padding:0.75rem; background:#fef3c7; border-radius:8px; border:1px solid #fbbf24;">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="font-size:12px; color:#78350f;">
+                  <span id="rewardIcon"></span> <strong id="rewardText"></strong>
+                </div>
+                <div style="font-size:18px; font-weight:700; color:#92400e;" id="rewardPoints"></div>
+              </div>
+              <div id="reviewAlert" style="display:none; margin-top:0.5rem; font-size:11px; color:#78350f; padding-top:0.5rem; border-top:1px solid #fbbf24;">
+                ⚠️ This prediction has medium confidence and may need expert review.
+              </div>
+            </div>
+          </div>
+
+          <!-- Feedback Section -->
+          <div id="feedbackSection" style="display:none; margin-top:1rem">
+            <div class="form-group">
+              <label class="form-label">💬 Provide Feedback</label>
+              <textarea id="feedbackInput" placeholder="Share your observations or feedback about this prediction..."></textarea>
+            </div>
+            <button id="submitFeedback" class="btn btn-secondary btn-full">
+              Submit Feedback
+            </button>
+          </div>
+
+          <div style="margin-top:1rem; padding:1rem; background:var(--bg); border-radius:10px; border:1px solid var(--border)">
+            <div style="font-size:12px; color:var(--text-secondary); margin-bottom:0.5rem">
+              <strong>Session Info</strong>
+            </div>
+            <div style="font-size:12px; color:var(--text-muted)">
+              Thread ID: <span class="badge badge-neutral" id="threadBadge">Not started</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Panel: Chat Interface -->
+      <div class="panel" style="display:flex; flex-direction:column;">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">💬 AI Medical Assistant</h2>
+            <p class="panel-subtitle">Ask questions about diagnosis, treatment, and care • Thread: <span id="threadIdDisplay">—</span></p>
+          </div>
+        </div>
+        <div class="chat-container">
+          <div class="messages" id="messages">
+            <div class="msg bot">
+              👋 Hello! I'm your AI medical assistant. Upload an image to begin analysis, and I'll provide detailed insights and answer your questions.
+            </div>
+          </div>
+          <div class="composer">
+            <textarea id="messageInput" placeholder="Ask about diagnosis, treatment options, precautions, or any concerns..."></textarea>
+            <button id="sendBtn" class="btn btn-primary">
+              <span>✉️</span>
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel: History & Metrics -->
+      <div class="panel">
+        <div class="panel-header">
+          <h2 class="panel-title">📊 Dashboard</h2>
+          <p class="panel-subtitle">Analysis metrics and history</p>
+        </div>
+        <div class="panel-body">
+          <!-- Metrics Section -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-value" id="totalPredictions">0</div>
+              <div class="metric-label">Total Scans</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value" id="malignantCount">0</div>
+              <div class="metric-label">Malignant</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value" id="benignCount">0</div>
+              <div class="metric-label">Benign</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-value" id="dinoCount">0</div>
+              <div class="metric-label">DINOv2 Used</div>
+            </div>
+          </div>
+
+          <!-- Reward System Metrics -->
+          <div style="margin: 1rem 0; padding: 1rem; background: linear-gradient(135deg, #fef3c7, #fef08a); border: 1px solid #fbbf24; border-radius: 10px;">
+            <div style="font-size: 12px; font-weight: 600; color: #92400e; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">
+              🏆 Reward System
+            </div>
+            <div style="margin-bottom: 0.75rem; text-align: center;">
+              <div style="font-size: 32px; font-weight: 700; color: #92400e;" id="totalRewards">0</div>
+              <div style="font-size: 12px; color: #78350f; font-weight: 600;">Total Points Earned</div>
+            </div>
+            <div style="font-size: 12px; color: #78350f; line-height: 1.6;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                <span>✅ High Confidence:</span>
+                <strong id="highConfCount">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                <span>⚠️ Medium Confidence:</span>
+                <strong id="medConfCount">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                <span>❌ Low Confidence:</span>
+                <strong id="lowConfCount">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid #fbbf24;">
+                <span>🔍 Needs Review:</span>
+                <strong id="reviewCount">0</strong>
+              </div>
+            </div>
+            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #fbbf24; font-size: 11px; color: #78350f;">
+              Earn 1 point for predictions with >70% confidence. Medium confidence predictions are flagged for expert review.
+            </div>
+          </div>
+
+          <!-- RL Agent Stats -->
+          <div id="rlAgentStats" style="margin: 1rem 0; padding: 1rem; background: linear-gradient(135deg, #fce7f3, #fbcfe8); border: 1px solid #f9a8d4; border-radius: 10px; display:none;">
+            <div style="font-size: 12px; font-weight: 600; color: #831843; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">
+              🤖 RL Agent Statistics
+            </div>
+            <div style="font-size: 12px; color: #831843; line-height: 1.6;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                <span>Training Episodes:</span>
+                <strong id="rlEpisodes">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                <span>Average Reward:</span>
+                <strong id="rlAvgReward">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                <span>States Explored:</span>
+                <strong id="rlStates">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                <span>Exploration Rate:</span>
+                <strong id="rlEpsilon">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid #f9a8d4;">
+                <span>Model Selection:</span>
+                <strong id="rlModelDist">—</strong>
+              </div>
+            </div>
+            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f9a8d4; font-size: 11px; color: #831843;">
+              RL Agent learns which model performs best for different image types.
+            </div>
+          </div>
+
+          <div style="margin-bottom:1rem; padding:1rem; background:linear-gradient(135deg, #f0f9ff, #e0f2fe); border:1px solid #bae6fd; border-radius:10px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+              <div style="font-size:12px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px;">📈 Model Performance Metrics</div>
+              <button id="trainAgentBtn" class="btn" style="padding:0.4rem 0.8rem; font-size:11px; background:var(--primary); color:white;">
+                🎓 Train RL Agent
+              </button>
+            </div>
+            <div style="font-size:13px; color:var(--text-primary); line-height:1.7;">
+              <div style="margin-bottom:0.5rem;"><strong>DINOv2 (Vision Transformer)</strong></div>
+              <div style="margin-left:1rem; margin-bottom:0.75rem;">
+                • Best Validation Accuracy: <strong>89.2%</strong><br>
+                • Test Accuracy: <strong>92.6%</strong><br>
+                • Architecture: Vision Transformer
+              </div>
+              <div style="margin-bottom:0.5rem;"><strong>ResNet50 (CNN)</strong></div>
+              <div style="margin-left:1rem;">
+                • Test Accuracy: <strong>91.8%</strong><br>
+                • Architecture: Convolutional Neural Network
+              </div>
+            </div>
+            <div style="margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid #bae6fd; font-size:12px; color:var(--text-secondary);">
+              Both models trained on melanoma cancer dataset for binary classification (Benign vs Malignant).
+            </div>
+          </div>
+
+          <!-- History Section -->
+          <div style="margin-top:1.5rem">
+            <h3 style="font-size:15px; font-weight:700; margin-bottom:1rem; color:var(--text-primary)">
+              🕒 Recent Analysis
+            </h3>
+            <div id="historyList" class="history-list">
+              <div style="text-align:center; padding:2rem; color:var(--text-muted); font-size:13px">
+                No analysis history yet
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for History Details -->
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">📋 Detailed Analysis Report</div>
+        <button class="modal-close" id="closeModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImage" class="modal-image" src="" alt="Analysis Image" />
+        
+        <div class="modal-info-grid">
+          <div class="modal-info-item">
+            <div class="modal-info-label">Diagnosis</div>
+            <div class="modal-info-value" id="modalPrediction">—</div>
+          </div>
+          <div class="modal-info-item">
+            <div class="modal-info-label">Confidence Level</div>
+            <div class="modal-info-value" id="modalProbability">—</div>
+          </div>
+          <div class="modal-info-item">
+            <div class="modal-info-label">AI Model</div>
+            <div class="modal-info-value" id="modalModel">—</div>
+          </div>
+          <div class="modal-info-item">
+            <div class="modal-info-label">Analysis Date</div>
+            <div class="modal-info-value" id="modalTimestamp" style="font-size:13px">—</div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">🤖 AI Medical Insights</div>
+          <div class="modal-feedback-box" id="modalAiResponse">—</div>
+        </div>
+
+        <div class="modal-section">
+          <div class="modal-section-title">💬 User Feedback</div>
+          <div class="modal-feedback-box" id="modalFeedback">
+            <span class="modal-no-feedback">No feedback provided for this analysis.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reward Popup Modal -->
+  <div class="modal-overlay" id="rewardModal">
+    <div class="reward-modal-content">
+      <div class="reward-coin-container">
+        <div class="reward-coin">🪙</div>
+      </div>
+      <div class="reward-title" id="rewardTitle">Excellent Prediction!</div>
+      <div class="reward-disease" id="rewardDisease">Benign</div>
+      <div class="reward-confidence">
+        <span class="reward-label">Confidence:</span>
+        <span class="reward-value" id="rewardConfidence">95.5%</span>
+      </div>
+      <div class="reward-points" id="rewardPoints">
+        <span class="points-text">+1</span>
+        <span class="points-label">Reward Point</span>
+      </div>
+      <div class="reward-message" id="rewardMessage">High confidence detection achieved!</div>
+      <button class="reward-close-btn" id="closeRewardModal">Continue</button>
+    </div>
+  </div>
+
+  <script>
+    // helpers
+    const $ = (id) => document.getElementById(id);
+    let currentThread = null;
+    let currentImageName = null;
+
+    // Modal controls
+    const historyModal = $('historyModal');
+    const closeModal = $('closeModal');
+    
+    closeModal.addEventListener('click', () => {
+      historyModal.classList.remove('active');
+    });
+    
+    historyModal.addEventListener('click', (e) => {
+      if(e.target === historyModal) {
+        historyModal.classList.remove('active');
+      }
+    });
+
+    // Close modal on ESC key
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && historyModal.classList.contains('active')) {
+        historyModal.classList.remove('active');
+      }
+    });
+
+    function showHistoryDetails(item) {
+      $('modalImage').src = `/feedback/${item.image_name}`;
+      $('modalPrediction').textContent = item.prediction;
+      $('modalPrediction').className = 'modal-info-value ' + item.prediction.toLowerCase();
+      $('modalProbability').textContent = (parseFloat(item.probability) * 100).toFixed(2) + '%';
+      $('modalModel').textContent = item.model_used;
+      $('modalTimestamp').textContent = item.timestamp;
+      $('modalAiResponse').textContent = item.ai_response || 'No AI response recorded.';
+      
+      const feedbackBox = $('modalFeedback');
+      if(item.feedback && item.feedback.trim()) {
+        feedbackBox.innerHTML = item.feedback;
+        feedbackBox.className = 'modal-feedback-box';
+      } else {
+        feedbackBox.innerHTML = '<span class="modal-no-feedback">No feedback provided yet.</span>';
+      }
+      
+      historyModal.classList.add('active');
+    }
+
+    // file handling + drag/drop
+    const fileInput = $('fileInput');
+    const preview = $('preview');
+    const uploadArea = $('uploadArea');
+    
+    // Click to upload
+    uploadArea.addEventListener('click', () => {
+      fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', e => handleFile(e.target.files[0]));
+
+    uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.style.opacity=0.9 });
+    uploadArea.addEventListener('dragleave', e => { uploadArea.style.opacity=1 });
+    uploadArea.addEventListener('drop', e => { e.preventDefault(); uploadArea.style.opacity=1; const f = e.dataTransfer.files[0]; handleFile(f); });
+
+    function handleFile(file){
+      if(!file) return;
+      if(!file.type.startsWith('image/')){ alert('Please provide an image'); return }
+      const url = URL.createObjectURL(file);
+      preview.src = url; preview.style.display='block'; preview.onload = () => URL.revokeObjectURL(url);
+      preview._file = file; // attach
+    }
+
+    // UI elements
+    const predictBtn = $('predictBtn');
+    const modelSelect = $('modelSelect');
+    const predictStatus = $('predictStatus');
+    const lastResult = $('lastResult');
+    const threadBadge = $('threadBadge');
+    const threadIdDisplay = $('threadIdDisplay');
+    const feedbackSection = $('feedbackSection');
+    const feedbackInput = $('feedbackInput');
+    const submitFeedback = $('submitFeedback');
+
+    predictBtn.addEventListener('click', async () => {
+      const file = preview._file;
+      if(!file){ alert('Please upload an image first'); return }
+
+      predictBtn.disabled = true;
+      predictBtn.innerHTML = '<span>⏳</span> Analyzing...';
+
+      try{
+        const form = new FormData();
+        form.append('file', file, file.name);
+        form.append('model', modelSelect.value);
+
+        const resp = await fetch('/predict', { method: 'POST', body: form });
+        if(!resp.ok) throw new Error(await resp.text());
+        const json = await resp.json();
+
+        // show result
+        const predClass = json.prediction.toLowerCase();
+        const badgeClass = predClass === 'malignant' ? 'badge-danger' : 'badge-success';
+        
+        const resultCard = document.getElementById('resultCard');
+        resultCard.style.display = 'block';
+        lastResult.innerHTML = `<span class="badge ${badgeClass}">${json.prediction}</span> <span style="color:var(--text-secondary)">•</span> ${(json.probability*100).toFixed(2)}% confidence`;
+        
+        // Display reward information
+        const rewardInfo = document.getElementById('rewardInfo');
+        const rewardIcon = document.getElementById('rewardIcon');
+        const rewardText = document.getElementById('rewardText');
+        const rewardPoints = document.getElementById('rewardPoints');
+        const reviewAlert = document.getElementById('reviewAlert');
+        
+        if(rewardInfo && json.reward_points !== undefined) {
+          rewardInfo.style.display = 'block';
+          
+          if(json.confidence_level === 'High') {
+            if(rewardIcon) rewardIcon.textContent = '🏆';
+            if(rewardText) rewardText.textContent = 'High Confidence - Reward Earned!';
+            if(rewardPoints) rewardPoints.textContent = `+${json.reward_points} pt`;
+            if(reviewAlert) reviewAlert.style.display = 'none';
+          } else if(json.confidence_level === 'Medium') {
+            if(rewardIcon) rewardIcon.textContent = '⚠️';
+            if(rewardText) rewardText.textContent = 'Medium Confidence';
+            if(rewardPoints) rewardPoints.textContent = '0 pt';
+            if(reviewAlert) reviewAlert.style.display = json.needs_review ? 'block' : 'none';
+          } else {
+            if(rewardIcon) rewardIcon.textContent = '❌';
+            if(rewardText) rewardText.textContent = 'Low Confidence';
+            if(rewardPoints) rewardPoints.textContent = '0 pt';
+            if(reviewAlert) reviewAlert.style.display = 'none';
+          }
+        }
+        
+        threadBadge.textContent = `#${json.thread_id}`;
+        threadBadge.className = 'badge badge-neutral';
+        threadIdDisplay.textContent = json.thread_id || '—';
+        currentThread = json.thread_id;
+        currentImageName = json.image_name;
+
+        // Show feedback section
+        feedbackSection.style.display = 'block';
+        feedbackInput.value = '';
+
+        addMessage('bot', `🔬 Analysis Complete\n\nDiagnosis: ${json.prediction}\nConfidence: ${(json.probability*100).toFixed(2)}%\n\n💡 AI Insights:\n${json.AI_response}`);
+        
+        // Show reward popup modal
+        showRewardPopup(json);
+        
+        // Refresh history and metrics
+        loadHistory();
+        loadMetrics();
+      }catch(err){
+        console.error(err); alert('❌ Analysis failed: ' + (err.message||err));
+      }finally{ 
+        predictBtn.disabled=false; 
+        predictBtn.innerHTML = '<span>🔍</span> Analyze Image';
+      }
+    });
+
+    // Feedback submission
+    submitFeedback.addEventListener('click', async () => {
+      if(!currentImageName){ alert('No prediction to provide feedback for'); return }
+      const feedback = feedbackInput.value.trim();
+      if(!feedback){ alert('Please enter your feedback'); return }
+
+      submitFeedback.disabled = true;
+      submitFeedback.textContent = 'Submitting...';
+
+      try{
+        const resp = await fetch('/feedback', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ image_name: currentImageName, feedback: feedback })
+        });
+        if(!resp.ok) throw new Error(await resp.text());
+        
+        // Show success message
+        const originalText = submitFeedback.textContent;
+        submitFeedback.textContent = '✅ Feedback Saved!';
+        submitFeedback.style.background = 'var(--success-light)';
+        submitFeedback.style.color = 'var(--success)';
+        
+        setTimeout(() => {
+          submitFeedback.textContent = 'Submit Feedback';
+          submitFeedback.style.background = '';
+          submitFeedback.style.color = '';
+        }, 2000);
+        
+        feedbackInput.value = '';
+        loadHistory(); // Refresh to show updated feedback
+      }catch(err){
+        console.error(err); alert('❌ Failed to submit feedback: ' + (err.message||err));
+      }finally{
+        submitFeedback.disabled = false;
+      }
+    });
+
+    // chat
+    const messages = $('messages');
+    const messageInput = $('messageInput');
+    const sendBtn = $('sendBtn');
+
+    function addMessage(who, text){
+      const el = document.createElement('div'); 
+      el.className = 'msg ' + (who==='user' ? 'user' : 'bot');
+      el.innerText = text;
+      messages.appendChild(el);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    messageInput.addEventListener('keydown', (e) => { if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); } });
+
+    // Train RL Agent button handler
+    const trainAgentBtn = $('trainAgentBtn');
+    if(trainAgentBtn) {
+      trainAgentBtn.addEventListener('click', async () => {
+        if(!confirm('Train RL agent from historical predictions? This will update the agent\'s knowledge based on new data only (previously trained data will be skipped).')) return;
+        
+        trainAgentBtn.disabled = true;
+        trainAgentBtn.innerHTML = '⏳ Training...';
+        
+        try {
+          const resp = await fetch('/train_agent', { method: 'POST' });
+          if(!resp.ok) throw new Error(await resp.text());
+          const json = await resp.json();
+          
+          alert(`✅ ${json.message}\n\nStats:\n• Episodes: ${json.stats.total_episodes}\n• Avg Reward: ${json.stats.avg_reward}\n• States Explored: ${json.stats.states_explored}\n• Exploration Rate: ${json.stats.epsilon}`);
+          
+          // Reload metrics to show updated RL stats
+          loadMetrics();
+        } catch(err) {
+          console.error(err);
+          alert('❌ Training failed: ' + err.message);
+        } finally {
+          trainAgentBtn.disabled = false;
+          trainAgentBtn.innerHTML = '🎓 Train RL Agent';
+        }
+      });
+    }
+
+    async function sendMessage(){
+      const txt = messageInput.value.trim(); if(!txt) return;
+      if(!currentThread){ alert('Do a prediction first to start a conversation thread.'); return }
+
+      addMessage('user', txt);
+      messageInput.value='';
+
+      try{
+        const resp = await fetch('/chat', {
+          method: 'POST', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ thread_id: currentThread, message: txt })
+        });
+        if(!resp.ok) throw new Error(await resp.text());
+        const json = await resp.json();
+        addMessage('bot', json.response || 'No response');
+      }catch(err){ console.error(err); addMessage('bot', '❌ Failed to send message.'); }
+    }
+
+    // Load history
+    async function loadHistory(){
+      try{
+        const resp = await fetch('/history');
+        if(!resp.ok) throw new Error(await resp.text());
+        const json = await resp.json();
+        
+        const historyList = $('historyList');
+        if(json.history.length === 0){
+          historyList.innerHTML = '<div style="text-align:center; padding:2rem; color:var(--text-muted); font-size:13px">No analysis history yet. Upload an image to begin.</div>';
+          return;
+        }
+
+        historyList.innerHTML = '';
+        json.history.slice(0, 10).forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'history-item';
+          
+          const predClass = item.prediction.toLowerCase();
+          const thumbUrl = `/feedback/${item.image_name}`;
+          
+          div.innerHTML = `
+            <img src="${thumbUrl}" class="history-thumb" alt="${item.prediction}" />
+            <div class="history-info">
+              <div class="history-disease ${predClass}">${item.prediction}</div>
+              <div class="history-meta">
+                <span>${(parseFloat(item.probability)*100).toFixed(1)}%</span>
+                <span>•</span>
+                <span>${item.model_used}</span>
+                <span>•</span>
+                <span>${new Date(item.timestamp).toLocaleDateString()}</span>
+              </div>
+              ${item.feedback ? `<div class="history-feedback-preview">💬 ${item.feedback.substring(0,50)}${item.feedback.length > 50 ? '...' : ''}</div>` : ''}
+            </div>
+          `;
+          
+          // Add click event to show modal
+          div.addEventListener('click', () => showHistoryDetails(item));
+          
+          historyList.appendChild(div);
+        });
+      }catch(err){
+        console.error(err);
+        $('historyList').innerHTML = '<div style="text-align:center; padding:2rem; color:var(--danger); font-size:13px">Failed to load history</div>';
+      }
+    }
+
+    // Load metrics
+    async function loadMetrics(){
+      try{
+        const resp = await fetch('/metrics');
+        if(!resp.ok) throw new Error(await resp.text());
+        const json = await resp.json();
+        
+        $('totalPredictions').textContent = json.total_predictions || 0;
+        $('malignantCount').textContent = json.predictions_breakdown?.Malignant || 0;
+        $('benignCount').textContent = json.predictions_breakdown?.Benign || 0;
+        $('dinoCount').textContent = json.models_used?.DINOv2 || 0;
+        
+        // Reward system metrics
+        if(json.reward_system) {
+          $('totalRewards').textContent = json.reward_system.total_reward_points || 0;
+          $('highConfCount').textContent = json.reward_system.high_confidence_predictions || 0;
+          $('medConfCount').textContent = json.reward_system.medium_confidence_predictions || 0;
+          $('lowConfCount').textContent = json.reward_system.low_confidence_predictions || 0;
+          $('reviewCount').textContent = json.reward_system.predictions_needing_review || 0;
+        }
+        
+        // RL Agent stats
+        if(json.rl_agent && json.rl_agent.total_episodes > 0) {
+          const rlSection = $('rlAgentStats');
+          if(rlSection) rlSection.style.display = 'block';
+          
+          $('rlEpisodes').textContent = json.rl_agent.total_episodes || 0;
+          $('rlAvgReward').textContent = json.rl_agent.avg_reward || '0.000';
+          $('rlStates').textContent = json.rl_agent.states_explored || 0;
+          $('rlEpsilon').textContent = json.rl_agent.epsilon || '0.0000';
+          
+          // Format model distribution
+          if(json.rl_agent.action_distribution) {
+            const dist = json.rl_agent.action_distribution;
+            const distStr = Object.entries(dist).map(([model, count]) => `${model.split(' ')[0]}: ${count}`).join(', ');
+            $('rlModelDist').textContent = distStr;
+          }
+        }
+      }catch(err){
+        console.error(err);
+      }
+    }
+
+    // restore thread id if page reload
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('skin_thread');
+      if(saved){ currentThread = saved; threadBadge.textContent = saved; threadIdDisplay.textContent = saved }
+      
+      // Load initial data
+      loadHistory();
+      loadMetrics();
+    });
+
+    // Auto-refresh every 30 seconds
+    setInterval(() => {
+      loadHistory();
+      loadMetrics();
+    }, 30000);
+
+    // store when changes
+    const obs = new MutationObserver(()=>{ if(currentThread) localStorage.setItem('skin_thread', currentThread) });
+    obs.observe(threadIdDisplay, {childList:true});
+
+    // Reward Popup Modal
+    const rewardModal = $('rewardModal');
+    const closeRewardModal = $('closeRewardModal');
+
+    function showRewardPopup(predictionData) {
+      if(!rewardModal) return;
+      
+      const modal = rewardModal;
+      const content = modal.querySelector('.reward-modal-content');
+      const coinElement = modal.querySelector('.reward-coin');
+      const confidence = (predictionData.probability * 100).toFixed(1);
+      const isHighConfidence = confidence >= 70;
+
+      // Update content with null checks
+      const diseaseEl = $('rewardDisease');
+      const confidenceEl = $('rewardConfidence');
+      const titleEl = $('rewardTitle');
+      const pointsEl = $('rewardPoints');
+      const messageEl = $('rewardMessage');
+      
+      if(diseaseEl) diseaseEl.textContent = predictionData.prediction;
+      if(confidenceEl) confidenceEl.textContent = confidence + '%';
+      
+      if(isHighConfidence) {
+        // High confidence - show gold coin and reward
+        if(content) content.classList.remove('low-confidence');
+        if(titleEl) titleEl.textContent = 'Excellent Prediction!';
+        if(pointsEl) {
+          pointsEl.style.display = 'inline-flex';
+          const pointsText = pointsEl.querySelector('.points-text');
+          if(pointsText) pointsText.textContent = '+1';
+        }
+        if(messageEl) messageEl.textContent = 'High confidence detection achieved! You earned a reward point.';
+        
+        // Gold coin for both
+        if(coinElement) coinElement.textContent = '🪙';
+      } else {
+        // Low/medium confidence - show different style
+        if(content) content.classList.add('low-confidence');
+        if(titleEl) titleEl.textContent = 'Analysis Complete';
+        if(pointsEl) pointsEl.style.display = 'none';
+        
+        if(confidence >= 50) {
+          if(messageEl) messageEl.textContent = 'Medium confidence. This prediction has been flagged for expert review.';
+          if(coinElement) coinElement.textContent = '⚠️';
+        } else {
+          if(messageEl) messageEl.textContent = 'Low confidence detected. Please consult a medical professional.';
+          if(coinElement) coinElement.textContent = '🔍';
+        }
+      }
+
+      // Show modal with animation
+      modal.classList.add('active');
+    }
+
+    closeRewardModal.addEventListener('click', () => {
+      rewardModal.classList.remove('active');
+    });
+
+    rewardModal.addEventListener('click', (e) => {
+      if(e.target === rewardModal) {
+        rewardModal.classList.remove('active');
+      }
+    });
+
+    // Close reward modal on ESC key
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && rewardModal.classList.contains('active')) {
+        rewardModal.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
